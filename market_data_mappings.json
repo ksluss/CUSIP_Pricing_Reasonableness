@@ -1,0 +1,17 @@
+[
+{"Bloomberg Name" : "H15T3M Index","Type" : "Rates","Name" : "3M_CMT","Description" : "3M Treasury","Tenor" : 0.25,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T1Y Index","Type" : "Rates","Name" : "1Y_CMT","Description" : "1Y Treasury","Tenor" : 1,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T2Y Index","Type" : "Rates","Name" : "2Y_CMT","Description" : "2Y Treasury","Tenor" : 2,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T3Y Index","Type" : "Rates","Name" : "3Y_CMT","Description" : "3Y Treasury","Tenor" : 3,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T5Y Index","Type" : "Rates","Name" : "5Y_CMT","Description" : "5Y Treasury","Tenor" : 5,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T7Y Index","Type" : "Rates","Name" : "7Y_CMT","Description" : "7Y Treasury","Tenor" : 7,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T10Y Index","Type" : "Rates","Name" : "10Y_CMT","Description" : "10Y Treasury","Tenor" : 10,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T20Y Index","Type" : "Rates","Name" : "20Y_CMT","Description" : "20Y Treasury","Tenor" : 20,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "H15T30Y Index","Type" : "Rates","Name" : "30Y_CMT","Description" : "30Y Treasury","Tenor" : 30,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "LUMSTRUU Index","Type" : "Spreads","Name" : "MBS_Index","Description" : "Bloomberg U.S. MBS Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "LF98TRUU Index","Type" : "Spreads","Name" : "CORP_HY","Description" : "Bloomberg Corp HY Total Return Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "LBUSTRUU Index","Type" : "Spreads","Name" : "BBG_AGG","Description" : "Bloomberg Aggregate Total Return Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "LUACTRUU Index","Type" : "Spreads","Name" : "CORP_IG","Description" : "Bloomberg Corp Total Return Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "I00200US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Auto","Description" : "Bloomberg ABS Auto Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "I00147US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Card","Description" : "Bloomberg ABS Card Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"}
+]
