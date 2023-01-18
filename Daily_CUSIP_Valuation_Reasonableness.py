@@ -8,8 +8,8 @@ import Market_Data as md
 
 from GenerateMetrics import generatemetrics
 
-reportdate_str = '20230113'
-prevdate_str = '20230112'
+reportdate_str = '20230117'
+prevdate_str = '20230113'
 
 reportfldr = r'M:\Risk Management\Valuation\Daily Valuation Source Reports'
 datafile = f'{reportdate_str}_Angel_Oak_Custom_Pricing_Report2_Final.csv'
@@ -157,7 +157,8 @@ output['expected_chg'] = output['expected_price'] - output['price_prev']
 output['expected_mkt_val'] = output['expected_price']/100 * output['quantity']
 relevantdata = output[['date','portfolioid','cusip','description','class','sector','current_source','prior_source','model_methodology','expectation_method','rate_move','conv_move','spread_move','model_price_chg','min_piece','trace_last_trade_size','trace_time_of_trade','trace_last_trade_price','expectation_method','expected_chg','price_change','price_prev','model_price','expected_price','price','quantity','expected_mkt_val','marketvalue']]
 
-
+colnames = list(['date','cusip','portfolioid'])+list(output.columns[~output.columns.isin(positions.columns)])
+positions = positions.merge(output[colnames], on=['date','cusip','portfolioid'], how = 'left')
 
 #%%output a report
 with pd.ExcelWriter(f'{outfldr}{reportdate_str}_Pricing Reasonableness Report.xlsx') as writer:
