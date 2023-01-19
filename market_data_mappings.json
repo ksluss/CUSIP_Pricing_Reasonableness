@@ -13,5 +13,7 @@
 {"Bloomberg Name" : "LBUSTRUU Index","Type" : "Spreads","Name" : "BBG_AGG","Description" : "Bloomberg Aggregate Total Return Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
 {"Bloomberg Name" : "LUACTRUU Index","Type" : "Spreads","Name" : "CORP_IG","Description" : "Bloomberg Corp Total Return Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
 {"Bloomberg Name" : "I00200US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Auto","Description" : "Bloomberg ABS Auto Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
-{"Bloomberg Name" : "I00147US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Card","Description" : "Bloomberg ABS Card Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"}
+{"Bloomberg Name" : "I00147US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Card","Description" : "Bloomberg ABS Card Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "I31063US Index","Type" : "Spreads","Name" : "BBG_AGG_CMBS","Description" : "Bloomberg US CMBS Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "I30885US Index","Type" : "Spreads","Name" : "BBG_AGG_Agency_CMBS","Description" : "Bloomberg US Agency CMBS Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"}
 ]

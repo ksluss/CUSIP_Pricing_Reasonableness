@@ -84,8 +84,6 @@ def Get_Bloomberg_Price(df:pd.DataFrame, date: datetime.datetime):
 
     return df
 
-
-
 def RMBS_Agency(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: datetime.datetime, calendar):
     trade_threshold = -2
     spread = 'mbs_index_index_z_spread_bp'
@@ -99,6 +97,57 @@ def RMBS_Agency(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: da
     # if the last trade was within some threshold then overwrite the expected price with the last trade price
     df.loc[df['trace_time_of_trade'] >= reportdate - 2 * calendar, 'expectation_method'] = 'TRACE'
     df.loc[df['expectation_method'] == 'TRACE', 'expected_price'] = df['trace_last_trade_price']
+    # todo:  Alter this methodology so the expected price is the last trade price +/- the modeled price movements since the last trade.
+
+    return df
+
+def RMBS(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: datetime.datetime, calendar):
+    trade_threshold = -2
+    spread = 'mbs_index_index_z_spread_bp'
+
+    # calculate expected movement due to price changes
+    df = Get_Model_Price(df, mktdata_diff, spread)
+
+    # pull trade data from BBG
+    df = Get_TRACE(df)
+
+    # if the last trade was within some threshold then overwrite the expected price with the last trade price
+    df.loc[df['trace_time_of_trade'] >= reportdate - 2 * calendar, 'expectation_method'] = 'TRACE'
+    df.loc[(df['expectation_method'] == 'TRACE') & (~pd.isna(df['trace_last_trade_price'])) , 'expected_price'] = df['trace_last_trade_price']
+    # todo:  Alter this methodology so the expected price is the last trade price +/- the modeled price movements since the last trade.
+
+    return df
+
+def CMBS(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: datetime.datetime, calendar):
+    trade_threshold = -2
+    spread = 'bbg_agg_cmbs_index_z_spread_bp'
+
+    # calculate expected movement due to price changes
+    df = Get_Model_Price(df, mktdata_diff, spread)
+
+    # pull trade data from BBG
+    #df = Get_TRACE(df)
+
+    # if the last trade was within some threshold then overwrite the expected price with the last trade price
+    #df.loc[df['trace_time_of_trade'] >= reportdate - 2 * calendar, 'expectation_method'] = 'TRACE'
+    #df.loc[(df['expectation_method'] == 'TRACE') & (~pd.isna(df['trace_last_trade_price'])) , 'expected_price'] = df['trace_last_trade_price']
+    # todo:  Alter this methodology so the expected price is the last trade price +/- the modeled price movements since the last trade.
+
+    return df
+
+def CMBS_Agency(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: datetime.datetime, calendar):
+    trade_threshold = -2
+    spread = 'bbg_agg_agency_cmbs_index_z_spread_bp'
+
+    # calculate expected movement due to price changes
+    df = Get_Model_Price(df, mktdata_diff, spread)
+
+    # pull trade data from BBG
+    #df = Get_TRACE(df)
+
+    # if the last trade was within some threshold then overwrite the expected price with the last trade price
+    #df.loc[df['trace_time_of_trade'] >= reportdate - 2 * calendar, 'expectation_method'] = 'TRACE'
+    #df.loc[df['expectation_method'] == 'TRACE', 'expected_price'] = df['trace_last_trade_price']
     # todo:  Alter this methodology so the expected price is the last trade price +/- the modeled price movements since the last trade.
 
     return df
@@ -119,8 +168,6 @@ def corp_ig(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: dateti
     # todo:  Alter this methodology so the expected price is the last trade price +/- the modeled price movements since the last trade.
 
     return df
-
-
 
 def corp_hy(df: pd.DataFrame(), mktdata_diff: pd.DataFrame(), reportdate: datetime.datetime, calendar):
 
@@ -196,5 +243,11 @@ def cost(df: pd.DataFrame(), reportdate):
     qry = f"select TradeDate, PortfolioID, cusip, TradePrice from dbo.trade where cusip in({cusips}) and date <= '{reportdate}'"
     print(qry)
     trades = rt.read_data('AOCA', qry)
+
+    return df
+
+def calc_mkt_value(df:pd.DataFrame, method:str, expected_mkt_val:str, expected_price:str, quantity:str):
+    df.loc[df[method]=='per_100', expected_mkt_val] = df[expected_price] / 100 * df[quantity]
+    df.loc[df[method] == 'absolute', expected_mkt_val] = df[expected_price] * df[quantity]
 
     return df
