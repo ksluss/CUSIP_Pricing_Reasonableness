@@ -8,8 +8,8 @@ import Market_Data as md
 
 from GenerateMetrics import generatemetrics
 
-reportdate_str = '20230118'
-prevdate_str = '20230117'
+reportdate_str = '20230131'
+prevdate_str = '20230130'
 
 reportfldr = r'M:\Risk Management\Valuation\Daily Valuation Source Reports'
 datafile = f'{reportdate_str}_Angel_Oak_Custom_Pricing_Report2_Final.csv'
@@ -45,7 +45,7 @@ source_data.columns= source_data.columns.str.lower()
 revrepo = source_data.loc[source_data['issue_name'].str[:7]=='REVREPO']
 
 #read in current day's price info
-qry = f"Select a.Date, a.PortfolioID, a.Cusip, a.price, a.MarketValue, a.quantity from dbo.position a where date = '{reportdate_str}' and portfolioid in ({publicIDstr})"
+qry = f"Select a.Date, a.PortfolioID, a.Cusip, a.price, a.MarketValue, a.quantity from dbo.position a where date = '{reportdate_str}' and portfolioid in ({publicIDstr}) and a.Quantity !=0"
 print(qry)
 pos = func.read_data('AOCA',qry)
 pos.columns = pos.columns.str.lower()
@@ -74,13 +74,13 @@ pricing_sources.columns
 positions['source_change'] = positions['current_source']!=positions['prior_source']
 source_change = positions.loc[positions['source_change'] == True]
 
-positions.loc[positions['class'].isin(['Financing','Fund']), 'expectation_source'] = 'Financing'
+positions.loc[positions['class'].isin(['Financing']), 'expectation_source'] = 'Financing'
 positions.loc[(positions['current_source']=='Price at Cost') & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Cost'
 positions.loc[((positions['current_price_type']=='Px Official Close') |(positions['current_source']=='IDC NOCP') | (positions['current_source']=='IDC CANDADIAN')) & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Bloomberg'
-positions.loc[positions['class'].isin(['ETF']),'expectation_source'] = 'Bloomberg'
+positions.loc[positions['class'].isin(['ETF','Treasury','Fund']),'expectation_source'] = 'Bloomberg'
 positions.loc[(positions['current_source']=='Angel Oak Overrides') & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Accept US Bank'
 positions.loc[(positions['current_source']=='Broker Mark') & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Accept US Bank'
-positions.loc[(positions['current_source']=='Eagle PACE') & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Bloomberg'
+positions.loc[(positions['current_source']=='Eagle PACE') & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Accept US Bank'
 positions.loc[(positions['current_source']=='Bloomberg') & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Bloomberg'
 positions.loc[positions['model_methodology'].isin(['bloomberg']) & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Bloomberg'
 positions.loc[positions['model_methodology'].isin(['Cash']) & (pd.isnull(positions['expectation_source'])),'expectation_source'] = 'Cash'
@@ -91,7 +91,6 @@ bloomberg = positions.loc[positions['expectation_source'] == 'Bloomberg'].copy()
 index = bloomberg.index
 bloomberg = expectation.Get_Bloomberg_Price(bloomberg, reportdate)
 bloomberg.index = index
-
 
 accept = positions.loc[positions['expectation_source']=='Accept US Bank'].copy()
 accept['expected_price'] = accept['current_price']
@@ -124,7 +123,7 @@ abs_card = vendor_priced.loc[vendor_priced['model_methodology']=='abs_card'].cop
 abs = vendor_priced.loc[vendor_priced['model_methodology']=='abs'].copy()
 agency_cmbs = vendor_priced.loc[vendor_priced['model_methodology']=='cmbs_agency'].copy()
 cmbs = vendor_priced.loc[vendor_priced['model_methodology']=='cmbs'].copy()
-
+clo =  vendor_priced.loc[vendor_priced['model_methodology']=='clo'].copy()
 index = agency_rmbs.index
 agency_rmbs = expectation.RMBS_Agency(agency_rmbs, diff, reportdate, calendar)
 agency_rmbs.index = index
@@ -161,7 +160,12 @@ index = cmbs.index
 cmbs = expectation.CMBS(cmbs, diff, reportdate, calendar)
 cmbs.index = index
 
-output = pd.concat([bloomberg, agency_rmbs, corp_hy, corp_ig, abs, abs_auto, abs_card, accept, cash, rmbs, cmbs, agency_cmbs])
+
+index = clo.index
+clo = expectation.clo(clo, diff, reportdate, calendar)
+clo.index = index
+
+output = pd.concat([bloomberg, agency_rmbs, corp_hy, corp_ig, abs, abs_auto, abs_card, accept, cash, rmbs, cmbs, agency_cmbs, clo])
 
 #%%
 corp = pd.concat([corp_hy,corp_ig])
@@ -171,13 +175,18 @@ colnames = list(['date','cusip','portfolioid'])+list(output.columns[~output.colu
 output = positions.merge(output[colnames], on=['date','cusip','portfolioid'], how = 'left')
 output = expectation.calc_mkt_value(output, 'mkt_val_calc','expected_mkt_val','expected_price','quantity')
 output['expected_chg'] = output['expected_price'] - output['price_prev']
+output['price_difference'] = output['price'] - output['expected_price']
+output['mktval_difference'] = output['marketvalue'] - output['expected_mkt_val']
+output['abs_pct_mkt_val_diff'] = output['mktval_difference'].abs()/output['expected_mkt_val'].abs()
+output.sort_values(by='abs_pct_mkt_val_diff', ascending=False)
 
-relevantdata = output[['date','portfolioid','cusip','description','class','sector','current_source','prior_source','model_methodology','expectation_method','rate_move','conv_move','spread_move','model_price_chg','min_piece','trace_last_trade_size','trace_time_of_trade','trace_last_trade_price','expectation_method','expected_chg','price_change','price_prev','model_price','expected_price','price','quantity','expected_mkt_val','marketvalue']]
+relevantdata = output[['date','portfolioid','cusip','description','class','sector','current_source','prior_source','model_methodology','expectation_method','rate_move','conv_move','spread_move','model_price_chg','min_piece','trace_last_trade_size','trace_time_of_trade','trace_last_trade_price','expectation_method','expected_chg','price_change','price_prev','model_price','expected_price','price','price_difference','quantity','expected_mkt_val','marketvalue','mktval_difference']]
 
 #%%
 with pd.ExcelWriter(f'{outfldr}{reportdate_str}_Pricing Reasonableness Report.xlsx') as writer:
     for i in output['portfolioid'].unique():
         df = output.loc[output['portfolioid']==i].groupby(['class','model_methodology']).agg({'marketvalue_prev':'sum','marketvalue':'sum','expected_mkt_val':'sum'})
+        df.reset_index(inplace=True)
         df['act_vs_exp'] = df['marketvalue']-df['expected_mkt_val']
         df['pct_diff'] = df['act_vs_exp']/df['expected_mkt_val']
         df.to_excel(writer, sheet_name=str(i), engine='xlsxwriter')
@@ -190,9 +199,9 @@ with pd.ExcelWriter(f'{outfldr}{reportdate_str}_Pricing Reasonableness Data.xlsx
     nopos.to_excel(writer, sheet_name='No Position Info', engine='xlsxwriter')
     for i in relevantdata['class'].unique():
         print(i)
-        relevantdata.loc[relevantdata['class']==i].to_excel(writer, sheet_name=f'{i}_data', engine='xlsxwriter')
-
-
+        df = relevantdata.loc[relevantdata['class']==i].copy()
+        df.sort_values(by='price_difference')
+        df.to_excel(writer, sheet_name=f'{i}_data', engine='xlsxwriter')
 
 print('C.R.E.A.M. GET THE MONEY!!!')
 print(f'done running {reportdate}')

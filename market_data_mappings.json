@@ -15,5 +15,14 @@
 {"Bloomberg Name" : "I00200US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Auto","Description" : "Bloomberg ABS Auto Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
 {"Bloomberg Name" : "I00147US Index","Type" : "Spreads","Name" : "BBG_AGG_ABS_Card","Description" : "Bloomberg ABS Card Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
 {"Bloomberg Name" : "I31063US Index","Type" : "Spreads","Name" : "BBG_AGG_CMBS","Description" : "Bloomberg US CMBS Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
-{"Bloomberg Name" : "I30885US Index","Type" : "Spreads","Name" : "BBG_AGG_Agency_CMBS","Description" : "Bloomberg US Agency CMBS Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"}
+{"Bloomberg Name" : "I30885US Index","Type" : "Spreads","Name" : "BBG_AGG_Agency_CMBS","Description" : "Bloomberg US Agency CMBS Total Return","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "SPBDALB Index","Type" : "Spreads","Name" : "Mngstar_Lev_Loan_Idx","Description" : "Morningstart Leveraged Loan Index","Tenor" : "N/A","Field" : "INDEX_Z_SPREAD_BP"},
+{"Bloomberg Name" : "USSWAP1 CURNCY","Type" : "Rates","Name" : "1Y_SWAP","Description" : "1Y USD SWAP","Tenor" : 1,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP2 CURNCY","Type" : "Rates","Name" : "2Y_SWAP","Description" : "2Y USD SWAP","Tenor" : 2,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP3 CURNCY","Type" : "Rates","Name" : "3Y_SWAP","Description" : "3Y USD SWAP","Tenor" : 3,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP5 CURNCY","Type" : "Rates","Name" : "5Y_SWAP","Description" : "5Y USD SWAP","Tenor" : 5,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP7 CURNCY","Type" : "Rates","Name" : "7Y_SWAP","Description" : "7Y USD SWAP","Tenor" : 7,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP10 CURNCY","Type" : "Rates","Name" : "10Y_SWAP","Description" : "10Y USD SWAP","Tenor" : 10,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP20 CURNCY","Type" : "Rates","Name" : "20Y_SWAP","Description" : "20Y USD SWAP","Tenor" : 20,"Field" : "PX_LAST"},
+{"Bloomberg Name" : "USSWAP30 CURNCY","Type" : "Rates","Name" : "30Y_SWAP","Description" : "30Y USD SWAP","Tenor" : 30,"Field" : "PX_LAST"}
 ]

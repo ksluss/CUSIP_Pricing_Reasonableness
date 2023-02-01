@@ -15,7 +15,7 @@ def generatemetrics(datestr:str, portstr:str, tenors, wgtCol_prefix:str):
 
     #%% Import instrument metrics
 
-    qry = f"Select a.Date, a.PortfolioID, a.Cusip, b.Class,  a.Description, b.Sector, a.price, a.MarketValue, c.EffectiveDuration, c.ModifiedDuration, c.EffectiveConvexity, c.SpreadDuration, c.WAL, b.MaturityDate, d.AOCA_Rating " \
+    qry = f"Select a.Date, a.PortfolioID, a.Cusip, b.Class,  a.Description, b.Sector, a.price, a.MarketValue, b.ParPrice, c.EffectiveDuration, c.ModifiedDuration, c.EffectiveConvexity, c.SpreadDuration, c.WAL, b.MaturityDate, d.AOCA_Rating " \
           f"from dbo.position a " \
           f"left join dbo.instrument b on a.cusip = b.cusip " \
           f"left join dbo.InstrumentMetrics c on a.cusip = c.cusip and a.date = c.date " \
