@@ -8,17 +8,17 @@ import Market_Data as md
 
 from GenerateMetrics import generatemetrics
 
-reportdate_str = '20230131'
-prevdate_str = '20230130'
+reportdate_str = '20230206'
+prevdate_str = '20230203'
 
-reportfldr = r'M:\Risk Management\Valuation\Daily Valuation Source Reports'
-datafile = f'{reportdate_str}_Angel_Oak_Custom_Pricing_Report2_Final.csv'
-outfldr = r'\\aoc-files01\funding_users\users\ksluss\Projects\2023\CUSIP Pricing Analytics\Daily Report Output'
+datafldr = r'\\aoc-files01\RiskAndValuation\FileRepository\2a-5\raw'
+datafile = f'AngelOakCap.40YO.Custom_Pricing_{reportdate_str}.csv'
+outfldr = r'\\aoc-files01\RiskAndValuation\Valuations\CUSIP Valuation Reasonableness\Daily_Report_Output'
 
 reportdate = datetime.strptime(reportdate_str,'%Y%m%d')
 prevdate = datetime.strptime(prevdate_str,'%Y%m%d')
 
-reportfldr = func.scrubfldrname(reportfldr, "\\")
+datafldr = func.scrubfldrname(datafldr, "\\")
 outfldr = func.scrubfldrname(outfldr,"\\")
 (fund, public, publicIDs, publicIDstr, private, privateIDs, privateIDstr) = func.importFunds(exclude=['AOU'])
 
@@ -40,7 +40,7 @@ calendar = func.get_calendar()
 
 #%%read in position data from US Bank File
 #read in pricing source data from EagleSTAR output
-source_data = pd.read_csv(reportfldr + datafile)[['Master_ID','Primary_Asset_ID','Issue_Name','Current_Price','Current_Price_Type','Current_Source','Prior_Source']]
+source_data = pd.read_csv(datafldr + datafile)[['Master_ID','Primary_Asset_ID','Issue_Name','Current_Price','Current_Price_Type','Current_Source','Prior_Source']]
 source_data.columns= source_data.columns.str.lower()
 revrepo = source_data.loc[source_data['issue_name'].str[:7]=='REVREPO']
 

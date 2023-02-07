@@ -117,7 +117,7 @@ def Get_Bloomberg_Price(df:pd.DataFrame, date: datetime.datetime):
 
     #df.loc[(df['cusip'].isin(tickers)) & (df['cusip'].str[-7:] != ' COMDTY'), 'cusip'] = df['cusip'] + " COMDTY"
     #tickers = [x if x[-7:]==' COMDTY' else x + " COMDTY" for x in tickers]
-    tickers = temp['tickers']
+    tickers = temp['tickers'].unique()
 
     trade_data2 = blp.bdh(tickers, fields, date, date)
     trade_data2 = trade_data2.transpose().droplevel(1)
